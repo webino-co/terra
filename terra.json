@@ -1,0 +1,9 @@
+{
+  "pages": [
+    {
+      "id": "home",
+      "title": "Home Page",
+      "file": "templates/pages/home/home.page.php"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "webino/terra-wordpress-theme",
+  "description": "High-Performance WordPress Theme Boilerplate",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Webino",
+      "email": "dev@webino.co"
+    }
+  ],
+  "require": {
+    "timber/timber": "^2.3"
+  }
+}
