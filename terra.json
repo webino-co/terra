@@ -4,7 +4,11 @@
       "id": "home",
       "title": "Home Page",
       "dir": "templates/pages/home",
-      "file": "templates/pages/home/home.page.php"
+      "file": "templates/pages/home/home.page.php",
+      "assets": {
+        "dequeue": "all",
+        "enqueue": []
+      }
     }
   ],
   "config": {

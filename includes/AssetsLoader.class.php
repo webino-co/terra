@@ -6,6 +6,7 @@ class AssetsLoader {
 
     protected $assets = [];
     protected $pages = [];
+    protected $currentPage = null;
     protected $assetsConfig = null;
 
     public function __construct() {
@@ -14,9 +15,15 @@ class AssetsLoader {
 
         $this->pages = $themeConfig["pages"];
         $this->assetsConfig = $themeConfig["configs"];
+
+        $this->currentPage = $this->get_current_page_data();
     }
 
+    /**
+     * Run the Assets Loader
+     */
     public function run() {
+        $this->dequeue_default_assets();
         $this->load_global_assets();
         $this->load_page_assets();
     }
@@ -57,6 +64,20 @@ class AssetsLoader {
     }
 
     /**
+     * Get Current Page Data
+     */
+    private function get_current_page_data() {
+
+        $current_template = get_page_template_slug();
+
+        foreach ($this->pages as $page) {
+            if ($current_template === $page->file) {
+                return $page;
+            }
+        }
+    }
+
+    /**
      * Load Theme Global Assets
      */
     private function load_global_assets() {
@@ -75,14 +96,16 @@ class AssetsLoader {
 
         $current_template = get_page_template_slug();
 
-        foreach ($this->pages as $page) {
-            if ($current_template === $page->file) {
-                // Enqueue Page Scripts
-                $this->enqueue_page_assets($page->id, $this->assets->home_scripts);
-            }
-        }
+       // Enqueue Current age Scripts
+       if(!$this->currentPage) return;
+
+       $assetName = $this->currentPage->id . "_scripts";
+       $this->enqueue_page_assets($this->currentPage->id, $this->assets->$assetName);
     }
 
+    /**
+     * Enqueue Page Assets Based on strategy
+     */
     private function enqueue_page_assets( $id, $path ) {
 
         $type = pathinfo($path, PATHINFO_EXTENSION);
@@ -135,6 +158,69 @@ class AssetsLoader {
                 );
             }
         
-        });
+        }, PHP_INT_MAX);
+    }
+
+    /**
+     * Dequeue Default WordPress Assets
+     */
+    private function dequeue_default_assets() {
+
+        add_action("wp_enqueue_scripts", function() {  
+            // Get all registered/enqueued styles and scripts
+            global $wp_styles, $wp_scripts;
+
+            // Dequeue all styles
+            if (isset($wp_styles->queue)) {
+                foreach ($wp_styles->queue as $handle) {
+                    if(
+                        $this->should_dequeue_asset($handle)
+                    ) {
+                        wp_dequeue_style($handle);
+                        wp_deregister_style($handle);
+                    }
+                }
+            }
+
+            // Dequeue all scripts
+            if (isset($wp_scripts->queue)) {
+                foreach ($wp_scripts->queue as $handle) {
+                    if(
+                        $this->should_dequeue_asset($handle)
+                    ) {
+                        wp_dequeue_script($handle);
+                        wp_deregister_script($handle);
+                    }
+                }
+            }
+        }, PHP_INT_MAX - 1);
+    }
+
+    /**
+     * Check if asset should be dequeued
+     */
+    private function should_dequeue_asset( $asset_id ) {
+        
+        if(
+            $this->currentPage->assets->dequeue === "all" &&
+            (
+                (
+                    is_array($this->currentPage->assets->enqueue) &&
+                    !in_array($asset_id, $this->currentPage->assets->enqueue)
+                ) ||
+                !is_array($this->currentPage->assets->enqueue)
+            )
+        ) {
+            return true;
+        }
+
+        if(
+            is_array($this->currentPage->assets->dequeue) &&
+            in_array($asset_id, $this->currentPage->assets->dequeue)
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
