@@ -8,7 +8,7 @@ class Theme__Autoloader {
     
             // Convert the namespace to a file path
             $prefix = 'Terra\\'; // The namespace prefix
-            $base_dir = get_template_directory() . '/includes/'; // Base directory of your classes
+            $base_dir = get_stylesheet_directory() . '/includes/'; // Base directory of your classes
         
             // Check if the class uses the namespace prefix
             $len = strlen($prefix);

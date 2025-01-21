@@ -16,7 +16,7 @@ class TemplateLoader {
      */
     private function get_pages() {
 
-        $file_path = get_template_directory() . "/terra.json";
+        $file_path = get_stylesheet_directory() . "/terra.json";
 
         if (!file_exists($file_path)) {
             return [];

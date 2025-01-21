@@ -22,7 +22,7 @@ class AssetsLoader {
      */
     private function get_assets_list() {
 
-        $file_path = get_template_directory() . "/dist/manifest.json";
+        $file_path = get_stylesheet_directory() . "/dist/manifest.json";
 
         if (!file_exists($file_path)) {
             return [];
@@ -62,7 +62,7 @@ class AssetsLoader {
         foreach( $this->styles as $name => $filename ) {
             wp_enqueue_style(
                 $name,
-                get_template_directory_uri() . "/dist/{$filename}",
+                get_stylesheet_directory_uri() . "/dist/{$filename}",
                 array(),
                 wp_get_theme()->get('Version')
             );
@@ -77,7 +77,7 @@ class AssetsLoader {
         foreach( $this->scripts as $name => $filename ) {
             wp_enqueue_script(
                 $name,
-                get_template_directory_uri() . "/dist/{$filename}",
+                get_stylesheet_directory_uri() . "/dist/{$filename}",
                 array(),
                 wp_get_theme()->get('Version'),
                 true

@@ -33,7 +33,7 @@ class AssetsLoader {
      */
     private function get_theme_config() {
 
-        $file_path = get_template_directory() . "/terra.json";
+        $file_path = get_stylesheet_directory() . "/terra.json";
 
         if (!file_exists($file_path)) {
             return [];
@@ -52,7 +52,7 @@ class AssetsLoader {
      */
     private function get_assets() {
 
-        $file_path = get_template_directory() . "/dist/manifest.json";
+        $file_path = get_stylesheet_directory() . "/dist/manifest.json";
 
         if (!file_exists($file_path)) {
             return [];
@@ -110,7 +110,7 @@ class AssetsLoader {
 
         $type = pathinfo($path, PATHINFO_EXTENSION);
         
-        $file_path = get_template_directory() . "/dist/{$path}";
+        $file_path = get_stylesheet_directory() . "/dist/{$path}";
 
         $file_size = filesize($file_path);
 
@@ -143,7 +143,7 @@ class AssetsLoader {
             if( $type === "js" ) {
                 wp_enqueue_script(
                     "{$id}_scripts",
-                    get_template_directory_uri() . "/dist/{$path}",
+                    get_stylesheet_directory_uri() . "/dist/{$path}",
                     array(),
                     wp_get_theme()->get("Version"),
                     true
@@ -152,7 +152,7 @@ class AssetsLoader {
             } else {
                 wp_enqueue_style(
                     "{$id}_styles",
-                    get_template_directory_uri() . "/dist/{$path}",
+                    get_stylesheet_directory_uri() . "/dist/{$path}",
                     array(),
                     wp_get_theme()->get("Version")
                 );
