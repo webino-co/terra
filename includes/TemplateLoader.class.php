@@ -4,7 +4,9 @@ namespace Terra;
 
 class TemplateLoader {
 
-    public function __construct() {
+    public function __construct() {}
+
+    public function run() {
         $pages = $this->get_pages();
         $this->include_page_templates( $pages );
     }

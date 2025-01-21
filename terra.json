@@ -3,7 +3,15 @@
     {
       "id": "home",
       "title": "Home Page",
+      "dir": "templates/pages/home",
       "file": "templates/pages/home/home.page.php"
     }
-  ]
+  ],
+  "config": {
+    "assets": {
+      "inlineStrategy": {
+        "maxSize": 10000
+      }
+    }
+  }
 }

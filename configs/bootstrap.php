@@ -11,3 +11,6 @@ require_once( __DIR__ . "/timber.php" );
 
 // Load Templates Utilities File
 require_once( __DIR__ . "/templates.php" );
+
+// Laod Assets Config File
+require_once( __DIR__ . "/assets.php" );
